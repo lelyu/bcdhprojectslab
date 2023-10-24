@@ -42,6 +42,7 @@ def get_indexed_data(request, letter):
 
 
 # search the data for a specific search term across all columns: modernName", "alternativeNames", "state", "country"
+# todo: adding contain such as we don't only rely on fuzz ratio
 def search_data(request, term):
     data = fetch_csv_data()
     results = []
