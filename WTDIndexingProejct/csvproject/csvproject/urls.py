@@ -20,7 +20,7 @@ from csvapp import views
 
 urlpatterns = [
     path('data/<str:letter>/', views.get_indexed_data),
-    path('search/', views.search_data),
+    path('search/<str:term>/', views.search_data),
     path('data/', views.get_all_data),
     path('', views.homePageView),
 ]

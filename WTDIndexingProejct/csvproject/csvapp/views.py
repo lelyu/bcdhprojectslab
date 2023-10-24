@@ -1,7 +1,9 @@
 from django.http import JsonResponse
+import numpy as np
 import pandas as pd
 import requests
 import io
+from fuzzywuzzy import fuzz
 
 CSV_URL = "https://raw.githubusercontent.com/brlehman/bcdhprojectslab/main/WTDIndexingProejct/TDnameIndex.csv"
 
@@ -18,38 +20,41 @@ def fetch_csv_data():
 
 
 # get the data for a specific starting letter (A-Z) by the column "modernName"
-# used for the "Browse by Letter" feature, or like a indexing
+# used for the "Browse by Letter" feature
+# if modernName is empty, fill it; if the parameter is lowercase, uppercase it
 def get_indexed_data(request, letter):
     data = fetch_csv_data()
-    filtered_data = data[data["Modern Name"].str.startswith(letter)]
-    results = []
-    for _, row in filtered_data.iterrows():
-        result = {
-            "Modern Name": row["Modern Name"],
-            "Alt Name": f"{row['AltName1']}, {row['AltName2']}",
-            "AltScript": row["AltScript"],
-            "State/Province/Country": row["State/Province/Country"],
-        }
-        results.append(result)
-    return JsonResponse(results, safe=False)
-
-
-# search the data for a specific search term
-def search_data(request):
-    search_term = request.GET.get('search', '')
-    data = fetch_csv_data()
-    # Searching across all columns
-    filtered_data = data[data.apply(lambda row: row.astype(
-        str).str.contains(search_term).any(), axis=1)]
+    # Ensure the modernName column has no NaN values
+    data['modernName'] = data['modernName'].fillna('')
+    letter = letter.upper()
+    # Now apply the condition
+    filtered_data = data.loc[data['modernName'].str.startswith(
+        letter)]
     results = []
     for _, row in filtered_data.iterrows():
         result = {
             "Modern Name": row["modernName"],
             "Alt Name": row['alternativeNames'],
-            "AltScript": row["AltScript"],
-            "State/Province/Country": f"{row['State']}, {row['Province']}, {row['Country']}",
+            "State/Province/Country": f"{row['state']}, {row['country']}",
         }
         results.append(result)
+    return JsonResponse(results, safe=False)
+
+
+# search the data for a specific search term across all columns: modernName", "alternativeNames", "state", "country"
+def search_data(request, term):
+    data = fetch_csv_data()
+    results = []
+    # Ensure all columns have no NaN values
+    data = data.fillna('')
+    for _, row in data.iterrows():
+        if any(fuzz.ratio(term, str(value)) > 50 for value in row.values):  # 50 is a similarity threshold
+            result = {
+                "Modern Name": row["modernName"],
+                "Alt Name": row['alternativeNames'],
+                "State/Province/Country": f"{row['state']}, {row['country']}",
+            }
+            results.append(result)
     return JsonResponse(results, safe=False)
 
 
