@@ -48,7 +48,7 @@ def search_data(request, term):
     # Ensure all columns have no NaN values
     data = data.fillna('')
     for _, row in data.iterrows():
-        if any(fuzz.ratio(term, str(value)) > 50 for value in row.values):  # 50 is a similarity threshold
+        if any(fuzz.ratio(term, str(value)) > 75 for value in row.values):  # 75 is a similarity threshold
             result = {
                 "Modern Name": row["modernName"],
                 "Alt Name": row['alternativeNames'],
