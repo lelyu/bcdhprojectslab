@@ -1,28 +1,28 @@
 import React from "react";
 
-function DataTable({ data }) {
+// Make sure to accept the props parameter
+const DataTable = ({ data }) => {
+	// Use the data prop to render your table
 	return (
 		<table>
 			<thead>
 				<tr>
 					<th>Modern Name</th>
-					<th>Alt Names</th>
-					{/* Add other headers as needed */}
+					<th>Alternative Name</th>
+					<th>State/Province/Country</th>
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((row, index) => (
+				{data.map((item, index) => (
 					<tr key={index}>
-						<td>{row["Modern Name"]}</td>
-						<td>
-							{row["AltName1"]} {row["AltName2"]}
-						</td>
-						{/* Render other columns as needed */}
+						<td>{item["Modern Name"] || "N/A"}</td>
+						<td>{item["Alternative Name"] || "N/A"}</td>
+						<td>{item["State/Province/Country"] || "N/A"}</td>
 					</tr>
 				))}
 			</tbody>
 		</table>
 	);
-}
+};
 
 export default DataTable;

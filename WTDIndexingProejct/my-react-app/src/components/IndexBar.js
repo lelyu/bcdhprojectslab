@@ -1,17 +1,22 @@
 import React from "react";
 
-function IndexBar({ onSelectIndex }) {
-	const indices = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const IndexBar = ({ onIndex }) => {
+	const handleIndexSelect = (index) => {
+		onIndex(index);
+	};
+
+	// Assuming you have a predefined set of indices
+	const indices = ["A", "B", "C", "D"]; // etc.
 
 	return (
 		<div>
 			{indices.map((index) => (
-				<button key={index} onClick={() => onSelectIndex(index)}>
+				<button key={index} onClick={() => handleIndexSelect(index)}>
 					{index}
 				</button>
 			))}
 		</div>
 	);
-}
+};
 
 export default IndexBar;
