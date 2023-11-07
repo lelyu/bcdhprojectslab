@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 import numpy as np
 import pandas as pd
@@ -76,3 +77,10 @@ def get_all_data(request):
 
 def homePageView(request):
     return JsonResponse({"message": "Hello, world!"})
+
+
+# views.py
+
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)

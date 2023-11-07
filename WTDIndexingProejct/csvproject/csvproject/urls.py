@@ -24,3 +24,5 @@ urlpatterns = [
     path('data/', views.get_all_data),
     path('', views.homePageView),
 ]
+# urls.py
+handler404 = 'csvapp.views.handler404'
