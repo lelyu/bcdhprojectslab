@@ -4,9 +4,8 @@ const IndexBar = ({ onIndex }) => {
 	const handleIndexSelect = (index) => {
 		onIndex(index);
 	};
-
-	const indices = ["A", "B", "C", "D", "E"]; // etc.
-
+	// alphabetically ordered list of indices
+	const indices = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 	return (
 		<div>
 			{indices.map((index) => (
