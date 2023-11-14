@@ -1,8 +1,6 @@
 import React from "react";
 
-// Make sure to accept the props parameter
 const DataTable = ({ data }) => {
-	// Use the data prop to render your table
 	return (
 		<table>
 			<thead>
@@ -15,9 +13,15 @@ const DataTable = ({ data }) => {
 			<tbody>
 				{data.map((item, index) => (
 					<tr key={index}>
-						<td>{item["Modern Name"] || "N/A"}</td>
-						<td>{item["Alternative Name"] || "N/A"}</td>
-						<td>{item["State/Province/Country"] || "N/A"}</td>
+						{/* Use "N/A" for missing or NaN values */}
+						<td>{item["Modern Name"] ?? "N/A"}</td>
+						{/* Correcting for the typo in the JSON key */}
+						<td>
+							{item["Alternative Name"] ??
+								item["Alternitive Name"] ??
+								"N/A"}
+						</td>
+						<td>{item["State/Province/Country"] ?? "N/A"}</td>
 					</tr>
 				))}
 			</tbody>

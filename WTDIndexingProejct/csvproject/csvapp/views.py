@@ -8,16 +8,24 @@ from fuzzywuzzy import fuzz
 
 CSV_URL = "https://raw.githubusercontent.com/brlehman/bcdhprojectslab/main/WTDIndexingProejct/TDnameIndex.csv"
 
-
+def create_result_dict(row):
+    return {
+        "Modern Name": row["modernName"],
+        "Alternative Name": row["alternativeNames"],
+        "State/Province/Country": f"{row['state']}, {row['country']}"
+    }
 # get data from the CSV URL and return it as a DataFrame but filter out some columns
 # from modernName,alternativeNames,state,country,latitude,longitude,ID,Type,AltID, only keep modernName,alternativeNames,AltScript,state,country
 def fetch_csv_data():
     csv_data = requests.get(CSV_URL).content
     data = pd.read_csv(io.StringIO(csv_data.decode('utf-8')))
-    data = data[["modernName", "alternativeNames",
-                 "state", "country"]]
+    data = data[["modernName", "alternativeNames", "state", "country"]]
+
+    # Convert NaN values to None
+    data = data.where(pd.notnull(data), None)
 
     return data
+
 
 
 # get the data for a specific starting letter (A-Z) by the column "modernName"
@@ -33,12 +41,7 @@ def get_indexed_data(request, letter):
         letter)]
     results = []
     for _, row in filtered_data.iterrows():
-        result = {
-            "Modern Name": row["modernName"],
-            "Alt Name": row['alternativeNames'],
-            "State/Province/Country": f"{row['state']}, {row['country']}",
-        }
-        results.append(result)
+        results = [create_result_dict(row) for _, row in filtered_data.iterrows()]
     return JsonResponse(results, safe=False)
 
 
@@ -51,12 +54,7 @@ def search_data(request, term):
     data = data.fillna('')
     for _, row in data.iterrows():
         if any(fuzz.ratio(term, str(value)) > 75 for value in row.values):  # 75 is a similarity threshold
-            result = {
-                "Modern Name": row["modernName"],
-                "Alt Name": row['alternativeNames'],
-                "State/Province/Country": f"{row['state']}, {row['country']}",
-            }
-            results.append(result)
+            results = [create_result_dict(row) for _, row in data.iterrows() if any(fuzz.ratio(term, str(value)) > 75 for value in row.values)]
     return JsonResponse(results, safe=False)
 
 
@@ -64,14 +62,7 @@ def search_data(request, term):
 # call fetch_csv_data() to get all data and convert it to JSON
 def get_all_data(request):
     data = fetch_csv_data()
-    results = []
-    for _, row in data.iterrows():
-        result = {
-            "Modern Name": row["modernName"],
-            "Alternitive Name": row['alternativeNames'],
-            "State/Province/Country": f"{row['state']}, {row['country']}",
-        }
-        results.append(result)
+    results = [create_result_dict(row) for _, row in data.iterrows()]
     return JsonResponse(results, safe=False)
 
 
