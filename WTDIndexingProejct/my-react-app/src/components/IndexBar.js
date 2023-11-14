@@ -5,8 +5,7 @@ const IndexBar = ({ onIndex }) => {
 		onIndex(index);
 	};
 
-	// Assuming you have a predefined set of indices
-	const indices = ["A", "B", "C", "D"]; // etc.
+	const indices = ["A", "B", "C", "D", "E"]; // etc.
 
 	return (
 		<div>

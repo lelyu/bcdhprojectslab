@@ -1,40 +1,61 @@
 import React, { useState, useEffect } from "react";
-import DataTable from "./DataTable";
-import SearchBar from "./SearchBar";
-import IndexBar from "./IndexBar";
+import DataTable from "./components/DataTable";
+import SearchBar from "./components/SearchBar";
+import IndexBar from "./components/IndexBar";
 
 function App() {
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		fetchData();
 	}, []);
 
 	const fetchData = async () => {
+		setIsLoading(true);
 		try {
-			const response = await fetch("/api/data");
+			const response = await fetch("http://127.0.0.1:8000/data");
+			if (!response.ok) throw new Error("Network response was not ok.");
 			const json = await response.json();
 			setData(json);
-			setFilteredData(json); // Initially, filteredData is the same as the full dataset
+			setFilteredData(json);
 		} catch (error) {
 			console.error("Error fetching data: ", error);
+			setError(error.toString());
 		}
+		setIsLoading(false);
 	};
 
 	const handleSearch = async (searchQuery) => {
-		// Assuming your API can handle the search query
-		const response = await fetch(`/api/data?search=${searchQuery}`);
-		const json = await response.json();
-		setFilteredData(json); // Update the data with the search results
+		try {
+			const response = await fetch(
+				`http://127.0.0.1:8000/search?query=${searchQuery}`
+			);
+			if (!response.ok) throw new Error("Network response was not ok.");
+			const json = await response.json();
+			setFilteredData(json);
+		} catch (error) {
+			console.error("Error in search: ", error);
+		}
 	};
 
 	const handleIndex = async (index) => {
-		// Assuming your API can handle indexing
-		const response = await fetch(`/api/data?index=${index}`);
-		const json = await response.json();
-		setFilteredData(json); // Update the data with the indexed results
+		try {
+			const response = await fetch(
+				`http://127.0.0.1:8000/data?index=${index}`
+			);
+			if (!response.ok) throw new Error("Network response was not ok.");
+			const json = await response.json();
+			setFilteredData(json);
+		} catch (error) {
+			console.error("Error in indexing: ", error);
+		}
 	};
+
+	if (isLoading) return <div>Loading...</div>;
+	if (error) return <div>Error: {error}</div>;
 
 	return (
 		<div>
