@@ -13,40 +13,13 @@ function App() {
 		fetchData();
 	}, []);
 
-	// const fetchData = async () => {
-	// 	setIsLoading(true);
-	// 	try {
-	// 		const response = await fetch("http://127.0.0.1:8000/data/");
-	// 		if (!response.ok) throw new Error("Network response was not ok.");
-	// 		const json = await response.json();
-	// 		// setData(json);
-	// 		setFilteredData(json);
-	// 	} catch (error) {
-	// 		console.error("Error fetching data: ", error);
-	// 		setError(error.toString());
-	// 	}
-	// 	setIsLoading(false);
-	// };
-
-	// const handleSearch = async (searchQuery) => {
-	// 	try {
-	// 		const response = await fetch(
-	// 			`http://127.0.0.1:8000/search/${searchQuery}/`
-	// 		);
-	// 		if (!response.ok) throw new Error("Network response was not ok.");
-	// 		const json = await response.json();
-	// 		setFilteredData(json);
-	// 	} catch (error) {
-	// 		console.error("Error in search: ", error);
-	// 	}
-	// };
 	// version that clears search term after a search and handles empty search term
 	const fetchData = async (searchQuery = "") => {
 		setIsLoading(true);
-		let url = "http://127.0.0.1:8000/data/";
+		let url = "https://csvproject.fly.dev/data/";
 		if (searchQuery) {
 			// Modify the URL for search endpoint if there's a search query
-			url = `http://127.0.0.1:8000/search/${searchQuery}/`;
+			url = `http://csvproject.fly.dev/search/${searchQuery}/`;
 		}
 
 		try {
@@ -74,7 +47,7 @@ function App() {
 	const handleIndex = async (index) => {
 		try {
 			const response = await fetch(
-				`http://127.0.0.1:8000/data/${index}/`
+				`http://csvproject.fly.dev/data/${index}/`
 			);
 			if (!response.ok) throw new Error("Network response was not ok.");
 			const json = await response.json();
