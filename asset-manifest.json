@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/lelyu/bcdhprojectslab/static/css/main.fed5420f.css",
-    "main.js": "/lelyu/bcdhprojectslab/static/js/main.93310f5e.js",
-    "static/js/787.bc7d429a.chunk.js": "/lelyu/bcdhprojectslab/static/js/787.bc7d429a.chunk.js",
-    "index.html": "/lelyu/bcdhprojectslab/index.html",
-    "main.fed5420f.css.map": "/lelyu/bcdhprojectslab/static/css/main.fed5420f.css.map",
-    "main.93310f5e.js.map": "/lelyu/bcdhprojectslab/static/js/main.93310f5e.js.map",
-    "787.bc7d429a.chunk.js.map": "/lelyu/bcdhprojectslab/static/js/787.bc7d429a.chunk.js.map"
+    "main.css": "/bcdhprojectslab/static/css/main.fed5420f.css",
+    "main.js": "/bcdhprojectslab/static/js/main.e58feb87.js",
+    "static/js/787.bc7d429a.chunk.js": "/bcdhprojectslab/static/js/787.bc7d429a.chunk.js",
+    "index.html": "/bcdhprojectslab/index.html",
+    "main.fed5420f.css.map": "/bcdhprojectslab/static/css/main.fed5420f.css.map",
+    "main.e58feb87.js.map": "/bcdhprojectslab/static/js/main.e58feb87.js.map",
+    "787.bc7d429a.chunk.js.map": "/bcdhprojectslab/static/js/787.bc7d429a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fed5420f.css",
-    "static/js/main.93310f5e.js"
+    "static/js/main.e58feb87.js"
   ]
 }
